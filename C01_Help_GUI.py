@@ -12,12 +12,13 @@ from tkinter import *
 class Converter:
     # Initialize Function
     def __init__(self):
-
         # Define Format Variables
         bg_colour = "grey"
 
         # Converter Main Screen GUI
-        self.converter_frame = Frame(width=300, height=300, bg=bg_colour)
+        self.converter_frame = Frame(width=300, height=300,
+                                     bg=bg_colour,
+                                     padx=10, pady=10)
         self.converter_frame.grid()
 
         # Temperature Converter Heading (Row 0)
@@ -34,5 +35,22 @@ class Converter:
                                   font=("Arial", "14"),
                                   padx=10, pady=10,
                                   command=self.help)
-        
+        self.help_button.grid(row=1)
 
+    # Help Function
+    def help(self):
+        # Define Format Variables
+        bg_colour = "grey"
+        self.help = Label(self.converter_frame,
+                          text="You have the Charisma of a Damp Rag, and the Appearance of a Low-Grade Bank Clark!",
+                          font=("Times New Roman", "10", "bold"),
+                          bg=bg_colour,
+                          padx=20, pady=200)
+        self.help.grid(row=2)
+# Main Routine
+
+if __name__ == "__main__":
+    root = Tk()
+    root.title("Temperature Converter")
+    something = Converter()
+    root.mainloop()
