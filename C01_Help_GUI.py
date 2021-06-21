@@ -47,6 +47,8 @@ class Converter:
                           bg=bg_colour,
                           padx=20, pady=200)
         self.help.grid(row=2)
+        get_help = Help()
+        get_help.help_text.configure(text="Help Text Goes Here")
 # Main Routine
 
 if __name__ == "__main__":
