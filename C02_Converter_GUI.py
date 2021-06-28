@@ -7,7 +7,8 @@ Finn Wescombe
 """
 
 from tkinter import *
-from functools import partial # To Prevent Unwanted Windows
+from functools import partial  # To Prevent Unwanted Windows
+
 
 # Main Converter GUI Class
 class Converter:
@@ -17,33 +18,51 @@ class Converter:
         bg_colour = "grey"
 
         # Converter Main Screen GUI
-        self.converter_frame = Frame(width=300, height=300,
+        self.frame_converter = Frame(width=300, height=300,
                                      bg=bg_colour,
                                      padx=10, pady=10)
-        self.converter_frame.grid()
+        self.frame_converter.grid()
 
         # Temperature Converter Heading (Row 0)
-        self.temp_converter_heading_label = Label(self.converter_frame,
-                                                text="Temperature Converter",
-                                                  font=("Arial", "16", "bold"),
-                                                  bg=bg_colour,
-                                                  padx=10, pady=10)
-        self.temp_converter_heading_label.grid(row=0)
+        self.lbl_converter_heading = Label(self.frame_converter,
+                                           text="Temperature Converter",
+                                           font=("Arial", "16", "bold"),
+                                           bg=bg_colour,
+                                           padx=10, pady=10)
+        self.lbl_converter_heading.grid(row=0)
 
         # Instruction Label (Row 1)
+        self.lbl_instructions = Label(self.frame_converter,
+                                      text="Type in the amount to be converted "
+                                           "then push one of the buttons below "
+                                           "to convert.",
+                                      font=("Arial", "10", "italics"),
+                                      wrap=250,
+                                      justify=LEFT,
+                                      bg=bg_colour,
+                                      padx=10, pady=10)
+        self.lbl_instructions.grid(row=1)
 
         # Entry Box (Row 2)
 
         # Conversion Buttons Frame (Row 3)
+        self.frame_convert_btns = Frame(width=300, height=50,
+                                        bg="light red",
+                                        padx=10, pady=10)
+        self.frame_convert_btns.grid(row=3)
 
         # Centigrade and Fahrenheit Buttons (CBF - Row 0)
 
         # Conversion Result (Row 4)
 
         # Help/History Buttons Frame (Row 5)
+        self.frame_help_history = Frame(width=300, height=50,
+                                        bg="blue",
+                                        padx=10, pady=10)
+        self.frame_help_history.grid(row=3)
 
         # Help Button (HHBF - Row 0)
-        self.help_button = Button(self.converter_frame,
+        self.help_button = Button(self.frame_help_history,
                                   text="Help",
                                   font=("Arial", "14"),
                                   padx=10, pady=10,
@@ -109,6 +128,7 @@ class Help:
         partner.help_button.configure(state=NORMAL)
         # Close Window
         self.help_box.destroy()
+
 
 # Main Routine
 
