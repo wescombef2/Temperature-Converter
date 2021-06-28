@@ -30,7 +30,19 @@ class Converter:
                                                   padx=10, pady=10)
         self.temp_converter_heading_label.grid(row=0)
 
-        # Help Button (Row 1)
+        # Instruction Label (Row 1)
+
+        # Entry Box (Row 2)
+
+        # Conversion Buttons Frame (Row 3)
+
+        # Centigrade and Fahrenheit Buttons (CBF - Row 0)
+
+        # Conversion Result (Row 4)
+
+        # Help/History Buttons Frame (Row 5)
+
+        # Help Button (HHBF - Row 0)
         self.help_button = Button(self.converter_frame,
                                   text="Help",
                                   font=("Arial", "14"),
@@ -38,16 +50,11 @@ class Converter:
                                   command=self.help)
         self.help_button.grid(row=1)
 
-    # Help Function
+        # History Button (HHBF - Row 0)
+
+    # Get Help Function
     def help(self):
         # Define Format Variables
-        bg_colour = "grey"
-        self.help = Label(self.converter_frame,
-                          text="You have the Charisma of a Damp Rag, and the Appearance of a Low-Grade Bank Clark!",
-                          font=("Times New Roman", "10", "bold"),
-                          bg=bg_colour,
-                          padx=20, pady=200)
-        self.help.grid(row=2)
         get_help = Help(self)
         get_help.help_text.configure(text="Help Text Goes Here")
 
