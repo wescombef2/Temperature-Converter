@@ -55,15 +55,17 @@ class Converter:
 
         # Centigrade and Fahrenheit Buttons (CBF - Row 0)
         self.btn_centigrade = Button(self.frame_convert_btns,
-                                  text="Centigrade",
-                                  font=("Arial", "14"),
-                                  padx=10, pady=10)
+                                     text="Centigrade",
+                                     font=("Arial", "14"),
+                                     padx=10, pady=10,
+                                     command=self.convert(True))
         self.btn_centigrade.grid(row=0, column=1)
 
         self.btn_fahrenheit = Button(self.frame_convert_btns,
-                                  text="Fahrenheit",
-                                  font=("Arial", "14"),
-                                  padx=10, pady=10)
+                                     text="Fahrenheit",
+                                     font=("Arial", "14"),
+                                     padx=10, pady=10,
+                                     command=self.convert(True))
         self.btn_fahrenheit.grid(row=0, column=2)
 
         # Conversion Result (Row 4)
@@ -105,6 +107,15 @@ class Converter:
         # Define Format Variables
         get_help = Help(self)
         get_help.txt_help.configure(text="Help Text Goes Here")
+
+    def convert(self, centigrade):
+        conversion = 9/5
+        input = self.entry_to_convert.get()
+        if centigrade:
+            result = input * conversion + 32
+        else:
+            result = (input - 32) * (1/conversion)
+        return result
 
 # Help GUI Class
 class Help:
