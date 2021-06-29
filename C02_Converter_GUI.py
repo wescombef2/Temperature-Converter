@@ -44,6 +44,10 @@ class Converter:
         self.lbl_instructions.grid(row=1)
 
         # Entry Box (Row 2)
+        self.entry_to_convert = Entry(self.frame_converter,
+                                      width=30,
+                                      font=("Arial", "14", "bold"))
+        self.entry_to_convert.grid(row=2)
 
         # Conversion Buttons Frame (Row 3)
         self.frame_convert_btns = Frame(width=300, height=50,
