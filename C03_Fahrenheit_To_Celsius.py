@@ -58,21 +58,21 @@ class Converter:
                                      text="Centigrade",
                                      font=("Arial", "14"),
                                      padx=10, pady=10,
-                                     command=self.convert(True))
+                                     command=partial(self.convert, False))
         self.btn_centigrade.grid(row=0, column=1)
 
         self.btn_fahrenheit = Button(self.frame_convert_btns,
                                      text="Fahrenheit",
                                      font=("Arial", "14"),
                                      padx=10, pady=10,
-                                     command=self.convert(True))
+                                     command=partial(self.convert, True))
         self.btn_fahrenheit.grid(row=0, column=2)
 
         # Conversion Result (Row 4)
         self.lbl_convert_result = Label(self.frame_converter,
                                         text="Conversion goes here...",
                                         font=("Arial", "10", "bold"),
-                                        bg="white",
+                                        bg=bg_colour,
                                         pady=10)
         self.lbl_convert_result.grid(row=4)
 
@@ -110,12 +110,15 @@ class Converter:
 
     def convert(self, centigrade):
         conversion = 9/5
-        input = self.entry_to_convert.get()
-        if centigrade:
-            result = input * conversion + 32
+        input = float(self.entry_to_convert.get())
+        if input:
+            if centigrade:
+                result = input * conversion + 32
+            else:
+                result = (input - 32) * (1/conversion)
+            self.lbl_convert_result.configure(text=str(result))
         else:
-            result = (input - 32) * (1/conversion)
-        return result
+            print("Something has gone wrong.")
 
 # Help GUI Class
 class Help:
