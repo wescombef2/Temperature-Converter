@@ -38,7 +38,7 @@ class Converter:
                                            "to convert.",
                                       font=("Arial", "10", "italic"),
                                       wrap=250,
-                                      justify=LEFT,
+                                      justify=CENTER,
                                       bg=bg_colour,
                                       padx=10, pady=10)
         self.lbl_instructions.grid(row=1)
@@ -46,7 +46,8 @@ class Converter:
         # Entry Box (Row 2)
         self.entry_to_convert = Entry(self.frame_converter,
                                       width=30,
-                                      font=("Arial", "14", "bold"))
+                                      font=("Arial", "14", "bold"),
+                                      justify=CENTER)
         self.entry_to_convert.grid(row=2)
 
         # Conversion Buttons Frame (Row 3)
@@ -105,18 +106,35 @@ class Converter:
     # Get History Function
     def history(self):
         # Define Format Variables
-        get_help = Help(self)
-        get_help.txt_help.configure(text="Help Text Goes Here")
+        get_help = History(self)
+        get_help.txt_history.configure(text="Calculations go here.")
 
+    # Convert Function
     def convert(self, centigrade):
-        conversion = 9/5
-        input = float(self.entry_to_convert.get())
+
+        # Conversion Constant
+        CONVERSION = 9/5
+
+        # Get Input and Determine Validity
+        input = 0
+        try:
+            input = float(self.entry_to_convert.get())
+        except ValueError:
+            print("Error")
+
+        # Determine Conversion Type
         if input:
             if centigrade:
-                result = input * conversion + 32
+
+                # Conversion to Fahrenheit from Centigrade
+                result = input * CONVERSION + 32
             else:
-                result = (input - 32) * (1/conversion)
-            self.lbl_convert_result.configure(text=str(result))
+
+                # Conversion to Centigrade from Fahrenheit
+                result = (input - 32) * (1/CONVERSION)
+
+            # Configure Result Label Text to Display Result Rounded to 1 Decimal Point
+            self.lbl_convert_result.configure(text="{:.1f}".format(result))
         else:
             print("Something has gone wrong.")
 
@@ -170,6 +188,58 @@ class Help:
         partner.btn_help.configure(state=NORMAL)
         # Close Window
         self.window_help.destroy()
+
+# Help GUI Class
+class History:
+    # Initialize Function
+    def __init__(self, partner):
+        # Define Format Variables
+        bg_colour = "grey"
+
+        # Disable History Button
+        partner.btn_history.configure(state=DISABLED)
+
+        # Create Window
+        self.window_history = Toplevel()
+
+        self.window_history.protocol('WM_DELETE_WINDOW', partial(self.dismiss_history, partner))
+
+        # History Screen GUI
+        self.frame_history = Frame(self.window_history, width=300, height=200, bg=bg_colour)
+        self.frame_history.grid()
+
+        # History Heading (Row 0)
+        self.lbl_heading_history = Label(self.frame_history,
+                                        text="Calculation History",
+                                        font=("Arial", "16", "bold"),
+                                        bg=bg_colour,
+                                        padx=10, pady=10)
+        self.lbl_heading_history.grid(row=0)
+
+        # Help Text (Row 1)
+        self.txt_history = Label(self.frame_history,
+                               text="",
+                               justify=LEFT,
+                               width=40,
+                               bg=bg_colour,
+                               wrap=250)
+        self.txt_history.grid(row=1)
+
+        # Dismiss Button (Row 2)
+        self.btn_dismiss = Button(self.frame_history,
+                                     text="Dismiss",
+                                     font=("Arial", "14"),
+                                     padx=10, pady=10,
+                                     width=10,
+                                     command=partial(self.dismiss_history, partner))
+        self.btn_dismiss.grid(row=2, pady=10)
+
+    # Dismiss History Function
+    def dismiss_history(self, partner):
+        # Re-enable Help Button
+        partner.btn_history.configure(state=NORMAL)
+        # Close Window
+        self.window_history.destroy()
 
 
 # Main Routine
