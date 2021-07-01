@@ -116,7 +116,8 @@ class Converter:
         # Text for Recent History
         recent_history = ""
         for i in range(-1,-7):
-            recent_history += self.calculation_history[-1]
+            # Calculation History has
+            recent_history += self.calculation_history[-1][0]
 
         get_help = History(self)
         get_help.txt_history.configure(text=self.calculation_history)
@@ -142,14 +143,14 @@ class Converter:
                 result = input * CONVERSION + 32
 
                 # Save for Calculation History
-                self.calculation_history.append([input, result, "c_to_f"])
+                self.calculation_history.append([str(input) + "C", str(result) + "F"])
             else:
 
                 # Conversion to Centigrade from Fahrenheit
                 result = (input - 32) * (1/CONVERSION)
 
                 # Save for Calculation History
-                self.calculation_history.append([input, result, "f_to_c"])
+                self.calculation_history.append([str(input) + "F", str(result) + "C"])
 
             # Configure Result Label Text to Display Result Rounded to 1 Decimal Point
             self.lbl_convert_result.configure(text="{:.1f}".format(result))
