@@ -12,10 +12,17 @@ from functools import partial  # To Prevent Unwanted Windows
 
 # Main Converter GUI Class
 class Converter:
+
+    # Calculation History Variable
+    calculation_history = []
+
     # Initialize Function
     def __init__(self):
         # Define Format Variables
         bg_colour = "grey"
+
+        # Define History List
+        self.calculation_history = []
 
         # Converter Main Screen GUI
         self.frame_converter = Frame(width=320, height=300,
@@ -105,9 +112,14 @@ class Converter:
 
     # Get History Function
     def history(self):
-        # Define Format Variables
+
+        # Text for Recent History
+        recent_history = ""
+        for i in range(-1,-7):
+            recent_history += self.calculation_history[-1]
+
         get_help = History(self)
-        get_help.txt_history.configure(text="Calculations go here.")
+        get_help.txt_history.configure(text=self.calculation_history)
 
     # Convert Function
     def convert(self, centigrade):
@@ -128,10 +140,16 @@ class Converter:
 
                 # Conversion to Fahrenheit from Centigrade
                 result = input * CONVERSION + 32
+
+                # Save for Calculation History
+                self.calculation_history.append([input, result, "c_to_f"])
             else:
 
                 # Conversion to Centigrade from Fahrenheit
                 result = (input - 32) * (1/CONVERSION)
+
+                # Save for Calculation History
+                self.calculation_history.append([input, result, "f_to_c"])
 
             # Configure Result Label Text to Display Result Rounded to 1 Decimal Point
             self.lbl_convert_result.configure(text="{:.1f}".format(result))
