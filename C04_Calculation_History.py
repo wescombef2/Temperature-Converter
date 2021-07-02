@@ -115,12 +115,15 @@ class Converter:
 
         # Text for Recent History
         recent_history = ""
-        for i in range(-1,-7):
-            # Calculation History has
-            recent_history += self.calculation_history[-1][0]
+        history_length = -len(self.calculation_history)
+        for i in range(history_length, 0):
+            # Calculation History format [[input, result], [input, result]].
+            # For most recent, use [-1]
+            entry = self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
+            recent_history += entry + "\n"
 
         get_help = History(self)
-        get_help.txt_history.configure(text=self.calculation_history)
+        get_help.txt_history.configure(text=recent_history)
 
     # Convert Function
     def convert(self, centigrade):
