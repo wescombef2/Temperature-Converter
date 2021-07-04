@@ -72,7 +72,7 @@ class Converter:
         # Conversion Result (Row 4)
         self.lbl_convert_result = Label(self.frame_converter,
                                         text="Conversion goes here...",
-                                        font=("Arial", "10", "bold"),
+                                        font=("Arial", "14", "bold"),
                                         bg=bg_colour,
                                         pady=10)
         self.lbl_convert_result.grid(row=4)
@@ -120,7 +120,8 @@ class Converter:
         try:
             input = float(self.entry_to_convert.get())
         except ValueError:
-            print("Error")
+            # Configure Result Label Text to Display Error Message
+            self.lbl_convert_result.configure(text="This Input is Invalid. Please Enter a Number.", bg="red")
 
         # Determine Conversion Type
         if input:
@@ -128,15 +129,17 @@ class Converter:
 
                 # Conversion to Fahrenheit from Centigrade
                 result = input * CONVERSION + 32
+
+                # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit and green background.
+                self.lbl_convert_result.configure(text="{:.1f} Fahrenheit".format(result), bg="green")
+
             else:
 
                 # Conversion to Centigrade from Fahrenheit
                 result = (input - 32) * (1/CONVERSION)
 
-            # Configure Result Label Text to Display Result Rounded to 1 Decimal Point
-            self.lbl_convert_result.configure(text="{:.1f}".format(result))
-        else:
-            print("Something has gone wrong.")
+                # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit.
+                self.lbl_convert_result.configure(text="{:.1f} Centigrade".format(result), bg="green")
 
 # Help GUI Class
 class Help:
