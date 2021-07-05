@@ -140,7 +140,8 @@ class Converter:
         CONVERSION = 9/5
 
         # Get Input and Determine Validity
-        input = 0
+        # Set input to string so that float '0.0' can be considered valid.
+        input = ""
         result = 0
         try:
             input = float(self.entry_to_convert.get())
@@ -148,7 +149,7 @@ class Converter:
             # Configure Result Label Text to Display Error Message
             self.lbl_convert_result.configure(text="This Input is Invalid. Please Enter a Number.", bg="red")
 
-        if input:
+        if input or input == 0:
             # Determine Conversion Type
             if centigrade:
 
