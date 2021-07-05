@@ -113,20 +113,23 @@ class Converter:
         # Text for Recent History
         recent_history = ""
         # Reverse the list for most recent.
-        self.calculation_history.reverse()
+        # self.calculation_history.reverse()
+
+        # Add to a string the five most recent entries.
         if len(self.calculation_history) < 5:
-            for i in self.calculation_history:
+            for i in range(0,len(self.calculation_history)):
                 # Calculation History format [[input, result], [input, result]].
                 # For most recent, use [-1]
-                entry = " >>> " + i[0] + " to " + i[1]
+                entry = " >>> " + self.calculation_history[len(self.calculation_history) - i - 1][0] + " to " + self.calculation_history[len(self.calculation_history) - i - 1][1]
                 recent_history += entry + "\n"
         else:
             for i in range(0, 5):
                 # Calculation History format [[input, result], [input, result]].
                 # For most recent, use [-1]
-                entry = " >>> " + self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
+                entry = " >>> " + self.calculation_history[len(self.calculation_history) - i - 1][0] + " to " + self.calculation_history[len(self.calculation_history) - i - 1][1]
                 recent_history += entry + "\n"
 
+        # Create class and configure history.
         get_history = History(self)
         get_history.txt_history.configure(text=recent_history)
 
