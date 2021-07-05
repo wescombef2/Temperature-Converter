@@ -101,6 +101,10 @@ class Converter:
                                   command=self.history)
         self.btn_history.grid(row=0, column=2)
 
+        # Disable if no history
+        if len(self.calculation_history) == 0:
+            self.btn_history.configure(state=DISABLED)
+
     # Get Help Function
     def help(self):
         # Define Format Variables
@@ -161,11 +165,15 @@ class Converter:
 
                     # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit and green background.
                     self.lbl_convert_result.configure(text="{:.1f} Fahrenheit".format(result), bg="green")
+
+                    # Save for Calculation History
+                    self.calculation_history.append(["{:.1f}".format(input) + "C", "{:.1f}".format(result) + "F"])
+                    self.btn_history.configure(state=NORMAL)
+
                 else:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-273.13 Centigrade).", bg="red")
 
-                # Save for Calculation History
-                self.calculation_history.append(["{:.1f}".format(input) + "C", "{:.1f}".format(result) + "F"])
+
 
             else:
                 if input >= -459.76:
@@ -174,11 +182,14 @@ class Converter:
 
                     # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit.
                     self.lbl_convert_result.configure(text="{:.1f} Centigrade".format(result), bg="green")
+
+                    # Save for Calculation History and enable button
+                    self.calculation_history.append(["{:.1f}".format(input) + "F", "{:.1f}".format(result) + "C"])
+                    self.btn_history.configure(state=NORMAL)
+
                 else:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-459.76 Fahrenheit).", bg="red")
 
-                # Save for Calculation History
-                self.calculation_history.append(["{:.1f}".format(input) + "F", "{:.1f}".format(result) + "C"])
 
 # Help GUI Class
 class Help:
