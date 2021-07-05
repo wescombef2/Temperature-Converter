@@ -112,12 +112,20 @@ class Converter:
 
         # Text for Recent History
         recent_history = ""
+        # Reverse the list for most recent.
         self.calculation_history.reverse()
-        for i in range(0, 5):
-            # Calculation History format [[input, result], [input, result]].
-            # For most recent, use [-1]
-            entry = self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
-            recent_history += entry + "\n"
+        if len(self.calculation_history) < 5:
+            for i in self.calculation_history:
+                # Calculation History format [[input, result], [input, result]].
+                # For most recent, use [-1]
+                entry = " >>> " + i[0] + " to " + i[1]
+                recent_history += entry + "\n"
+        else:
+            for i in range(0, 5):
+                # Calculation History format [[input, result], [input, result]].
+                # For most recent, use [-1]
+                entry = " >>> " + self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
+                recent_history += entry + "\n"
 
         get_history = History(self)
         get_history.txt_history.configure(text=recent_history)
@@ -130,6 +138,7 @@ class Converter:
 
         # Get Input and Determine Validity
         input = 0
+        result = 0
         try:
             input = float(self.entry_to_convert.get())
         except ValueError:
@@ -152,7 +161,7 @@ class Converter:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-273.13 Centigrade).", bg="red")
 
                 # Save for Calculation History
-                self.calculation_history.append([str(input) + "C", str(result) + "F"])
+                self.calculation_history.append(["{:.1f}".format(input) + "C", "{:.1f}".format(result) + "F"])
 
             else:
                 if input >= -459.76:
@@ -165,7 +174,7 @@ class Converter:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-459.76 Fahrenheit).", bg="red")
 
                 # Save for Calculation History
-                self.calculation_history.append([str(input) + "F", str(result) + "C"])
+                self.calculation_history.append(["{:.1f}".format(input) + "F", "{:.1f}".format(result) + "C"])
 
 # Help GUI Class
 class Help:
