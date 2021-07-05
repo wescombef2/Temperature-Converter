@@ -13,9 +13,6 @@ from functools import partial  # To Prevent Unwanted Windows
 # Main Converter GUI Class
 class Converter:
 
-    # Calculation History Variable
-    calculation_history = []
-
     # Initialize Function
     def __init__(self):
         # Define Format Variables
@@ -115,8 +112,8 @@ class Converter:
 
         # Text for Recent History
         recent_history = ""
-        history_length = -len(self.calculation_history)
-        for i in range(history_length, 0):
+        self.calculation_history.reverse()
+        for i in range(0, 5):
             # Calculation History format [[input, result], [input, result]].
             # For most recent, use [-1]
             entry = self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
@@ -142,6 +139,7 @@ class Converter:
         if input:
             # Determine Conversion Type
             if centigrade:
+
                 # Ensure input is not less than absolute zero
                 if input >= -273.13:
 
@@ -152,6 +150,10 @@ class Converter:
                     self.lbl_convert_result.configure(text="{:.1f} Fahrenheit".format(result), bg="green")
                 else:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-273.13 Centigrade).", bg="red")
+
+                # Save for Calculation History
+                self.calculation_history.append([str(input) + "C", str(result) + "F"])
+
             else:
                 if input >= -459.76:
                     # Conversion to Centigrade from Fahrenheit
@@ -161,6 +163,9 @@ class Converter:
                     self.lbl_convert_result.configure(text="{:.1f} Centigrade".format(result), bg="green")
                 else:
                     self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-459.76 Fahrenheit).", bg="red")
+
+                # Save for Calculation History
+                self.calculation_history.append([str(input) + "F", str(result) + "C"])
 
 # Help GUI Class
 class Help:
