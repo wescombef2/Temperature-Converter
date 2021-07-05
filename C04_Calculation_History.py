@@ -122,8 +122,8 @@ class Converter:
             entry = self.calculation_history[i][0] + " to " + self.calculation_history[i][1]
             recent_history += entry + "\n"
 
-        get_help = History(self)
-        get_help.txt_history.configure(text=recent_history)
+        get_history = History(self)
+        get_history.txt_history.configure(text=recent_history)
 
     # Convert Function
     def convert(self, centigrade):
@@ -136,29 +136,30 @@ class Converter:
         try:
             input = float(self.entry_to_convert.get())
         except ValueError:
-            print("Error")
+            # Configure Result Label Text to Display Error Message
+            self.lbl_convert_result.configure(text="This Input is Invalid. Please Enter a Number.", bg="red")
 
         # Determine Conversion Type
-        if input:
-            if centigrade:
+        if centigrade:
+            # Ensure input is not less than absolute zero
+            if input >= -273.13:
 
                 # Conversion to Fahrenheit from Centigrade
                 result = input * CONVERSION + 32
 
-                # Save for Calculation History
-                self.calculation_history.append([str(input) + "C", str(result) + "F"])
+                # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit and green background.
+                self.lbl_convert_result.configure(text="{:.1f} Fahrenheit".format(result), bg="green")
             else:
-
+                self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-273.13 Centigrade).", bg="red")
+        else:
+            if input >= -459.76:
                 # Conversion to Centigrade from Fahrenheit
                 result = (input - 32) * (1/CONVERSION)
 
-                # Save for Calculation History
-                self.calculation_history.append([str(input) + "F", str(result) + "C"])
-
-            # Configure Result Label Text to Display Result Rounded to 1 Decimal Point
-            self.lbl_convert_result.configure(text="{:.1f}".format(result))
-        else:
-            print("Something has gone wrong.")
+                # Configure Result Label Text to Display Result Rounded to 1 Decimal Point with appropriate unit.
+                self.lbl_convert_result.configure(text="{:.1f} Centigrade".format(result), bg="green")
+            else:
+                self.lbl_convert_result.configure(text="This Temperature is Less than Absolute Zero (-459.76 Fahrenheit).", bg="red")
 
 # Help GUI Class
 class Help:
