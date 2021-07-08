@@ -109,7 +109,13 @@ class Converter:
     def help(self):
         # Define Format Variables
         get_help = Help(self)
-        get_help.txt_help.configure(text="Help Text Goes Here")
+        get_help.txt_help.configure(text="Enter the number of degrees to convert in the"
+                                         "entry box, then press the button to convert from"
+                                         "the other unit to the one named. This will be "
+                                         "displayed in the field below the buttons. Press"
+                                         "the History button to see your recent calculations,"
+                                         "from which you can export the history in its entirety"
+                                         "to a .txt file.")
 
     # Get History Function
     def history(self):
@@ -281,7 +287,7 @@ class History:
                                      partial(self.dismiss_history, partner))
 
         # History Screen GUI
-        self.frame_history = Frame(self.window_history, width=300, height=200, padx=60,
+        self.frame_history = Frame(self.window_history, width=300, height=200,
                                    bg=bg_colour)
         self.frame_history.grid()
 
@@ -316,7 +322,7 @@ class History:
         self.txt_history.grid(row=2)
 
         # Button Frame
-        self.frame_btns = Frame(self.window_history, width=300, height=200, padx=60,
+        self.frame_btns = Frame(self.window_history, width=300, height=200, padx=51,
                                    bg=bg_colour)
         self.frame_btns.grid()
 
@@ -369,7 +375,7 @@ class Export:
                                      partial(self.dismiss_export, partner))
 
         # History Screen GUI
-        self.frame_export = Frame(self.window_export, width=300, height=200, padx=50,
+        self.frame_export = Frame(self.window_export, width=300, height=200,
                                    bg=bg_colour)
         self.frame_export.grid()
 
@@ -412,7 +418,7 @@ class Export:
         self.entry_name.grid(row=3)
 
         # Button Frame
-        self.frame_btns = Frame(self.window_export, width=300, height=200, padx=60,
+        self.frame_btns = Frame(self.window_export, width=300, height=200, padx=32,
                                    bg=bg_colour)
         self.frame_btns.grid()
 
@@ -447,7 +453,7 @@ class Export:
 
         # Check validity
         for letter in filename:
-            if re.match(valid_char, filename):
+            if re.match(valid_char, letter):
                 continue
             elif letter == " ":
                 self.lbl_warning.configure(text="Spaces are not allowed", bg="red")
