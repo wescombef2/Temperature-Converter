@@ -1,14 +1,14 @@
 """
 Temperature Converter
 Component 05 - Export History
-Version 1.0
+Version 2.0
 Finn Wescombe
 6/07/21
 """
 
 from tkinter import *
 from functools import partial  # To Prevent Unwanted Windows
-
+import re
 
 # Main Converter GUI Class
 class Converter:
@@ -369,7 +369,7 @@ class Export:
                                      partial(self.dismiss_export, partner))
 
         # History Screen GUI
-        self.frame_export = Frame(self.window_export, width=300, height=200,
+        self.frame_export = Frame(self.window_export, width=300, height=200, padx=50,
                                    bg=bg_colour)
         self.frame_export.grid()
 
@@ -394,29 +394,39 @@ class Export:
                                       padx=10, pady=10)
         self.lbl_instructions.grid(row=1)
 
-        # Name Entry
+        # Warning Label (Row 2)
+        self.lbl_warning = Label(self.frame_export,
+                                      text="",
+                                      font=("Arial", "10", "italic"),
+                                      wrap=250,
+                                      justify=CENTER,
+                                      bg=bg_colour,
+                                      padx=10, pady=10)
+        self.lbl_warning.grid(row=2)
+
+        # Name Entry (Row 3)
         self.entry_name = Entry(self.frame_export,
                                       width=30,
                                       font=("Arial", "14", "bold"),
                                       justify=CENTER)
-        self.entry_name.grid(row=2)
+        self.entry_name.grid(row=3)
 
         # Button Frame
         self.frame_btns = Frame(self.window_export, width=300, height=200, padx=60,
                                    bg=bg_colour)
         self.frame_btns.grid()
 
-        # Save Button (Row 3)
+        # Save Button (Row 0 - Button Frame)
         self.btn_save = Button(self.frame_btns,
-                                  text="Dismiss",
+                                  text="Save",
                                   font=("Arial", "14"),
                                   padx=10, pady=10,
                                   width=10,
                                   command=partial(self.save_history,
                                                   calculation_history))
-        self.btn_save.grid(row=3, column=0, pady=10)
+        self.btn_save.grid(row=0, column=0, pady=10)
 
-        # Dismiss Button (Row 3)
+        # Dismiss Button (Row 3 - Button Frame)
         self.btn_dismiss = Button(self.frame_btns,
                                   text="Dismiss",
                                   font=("Arial", "14"),
@@ -424,16 +434,48 @@ class Export:
                                   width=10,
                                   command=partial(self.dismiss_export,
                                                   partner))
-        self.btn_dismiss.grid(row=3, column=1, pady=10)
+        self.btn_dismiss.grid(row=0, column=1, pady=10)
 
     # Save History Function
     def save_history(self, calculation_history):
 
         # Export File
         filename = self.entry_name.get()
+        valid_char = "[A-Za-z0-9_]"
 
-        if filename and ".txt" not in filename:
+        error = False
+
+        # Check validity
+        for letter in filename:
+            if not re.match(valid_char, letter):
+                self.lbl_warning.configure(text="{}'s are not allowed".format(letter), bg="red")
+                error = True
+                break
+            elif letter == " ":
+                self.lbl_warning.configure(text="Spaces are not allowed", bg="red")
+                error = True
+                break
+
+        if not filename:
+            self.lbl_warning.configure(text="Enter a file name", bg="red")
+            error = True
+
+        if not error:
+            # Add suffix
+            filename = filename + ".txt"
+
+            # Open / Create file
             file = open(filename, "w+")
+
+            # Write to File
+            for i in calculation_history:
+                file.write(i[0] + " is " + i[1] + "\n")
+
+            # Close file
+            file.close()
+
+            # Give message
+            self.lbl_warning.configure(text="File {} Saved".format(filename), bg="green")
 
     # Dismiss Export Function
     def dismiss_export(self, partner):
