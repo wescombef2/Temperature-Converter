@@ -428,8 +428,12 @@ class Export:
 
     # Save History Function
     def save_history(self, calculation_history):
-        # Export File
 
+        # Export File
+        filename = self.entry_name.get()
+
+        if filename and ".txt" not in filename:
+            file = open(filename, "w+")
 
     # Dismiss Export Function
     def dismiss_export(self, partner):
