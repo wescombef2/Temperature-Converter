@@ -115,7 +115,7 @@ class Converter:
     def history(self):
 
         # Text for Recent History
-        recent_history = ""
+        self.recent_history = ""
         # Reverse the list for most recent.
         # self.calculation_history.reverse()
 
@@ -128,7 +128,7 @@ class Converter:
                     len(self.calculation_history) - i - 1][0] + " is " + \
                         self.calculation_history[
                             len(self.calculation_history) - i - 1][1]
-                recent_history += entry + "\n\n"
+                self.recent_history += entry + "\n\n"
         else:
             for i in range(0, 5):
                 # Calculation History format [[input, result], [input, result]].
@@ -137,11 +137,11 @@ class Converter:
                     len(self.calculation_history) - i - 1][0] + " is " + \
                         self.calculation_history[
                             len(self.calculation_history) - i - 1][1]
-                recent_history += entry + "\n\n"
+                self.recent_history += entry + "\n\n"
 
         # Create class and configure history.
         get_history = History(self)
-        get_history.txt_history.configure(text=recent_history)
+        get_history.txt_history.configure(text=self.recent_history)
 
     # Convert Function
     def convert(self, centigrade):
@@ -281,7 +281,7 @@ class History:
                                      partial(self.dismiss_history, partner))
 
         # History Screen GUI
-        self.frame_history = Frame(self.window_history, width=300, height=200,
+        self.frame_history = Frame(self.window_history, width=300, height=200, padx=60,
                                    bg=bg_colour)
         self.frame_history.grid()
 
@@ -311,19 +311,38 @@ class History:
                                  text="",
                                  font=("Arial", "10", "bold"),
                                  justify=CENTER,
-                                 width=50,
+                                 width=50, height=11,
                                  bg=bg_colour)
         self.txt_history.grid(row=2)
 
+        # Button Frame
+        self.frame_btns = Frame(self.window_history, width=300, height=200, padx=60,
+                                   bg=bg_colour)
+        self.frame_btns.grid()
+
+        # Export Button (Row 3)
+        self.btn_export = Button(self.frame_btns,
+                                  text="Export",
+                                  font=("Arial", "14"),
+                                  padx=10, pady=10,
+                                  width=10,
+                                  command=partial(self.export, partner))
+        self.btn_export.grid(row=3, column=0, pady=10)
+
         # Dismiss Button (Row 3)
-        self.btn_dismiss = Button(self.frame_history,
+        self.btn_dismiss = Button(self.frame_btns,
                                   text="Dismiss",
                                   font=("Arial", "14"),
                                   padx=10, pady=10,
                                   width=10,
                                   command=partial(self.dismiss_history,
                                                   partner))
-        self.btn_dismiss.grid(row=3, pady=10)
+        self.btn_dismiss.grid(row=3, column=1, pady=10)
+
+    # Get Export Function
+    def export(self, main):
+        # Define Format Variables
+        get_export = Export(self, main.calculation_history)
 
     # Dismiss History Function
     def dismiss_history(self, partner):
@@ -336,26 +355,26 @@ class History:
 # Help GUI Class
 class Export:
     # Initialize Function
-    def __init__(self, partner):
+    def __init__(self, partner, calculation_history):
         # Define Format Variables
         bg_colour = "grey"
 
         # Disable Export Button
-        # partner.btn_export.configure(state=DISABLED)
+        partner.btn_export.configure(state=DISABLED)
 
         # Create Window
-        self.window_history = Toplevel()
+        self.window_export = Toplevel()
 
-        self.window_history.protocol('WM_DELETE_WINDOW',
+        self.window_export.protocol('WM_DELETE_WINDOW',
                                      partial(self.dismiss_export, partner))
 
         # History Screen GUI
-        self.frame_history = Frame(self.window_history, width=300, height=200,
+        self.frame_export = Frame(self.window_export, width=300, height=200,
                                    bg=bg_colour)
-        self.frame_history.grid()
+        self.frame_export.grid()
 
         # History Heading (Row 0)
-        self.lbl_heading_history = Label(self.frame_history,
+        self.lbl_heading_history = Label(self.frame_export,
                                          text="Export History",
                                          font=("Arial", "16", "bold"),
                                          bg=bg_colour,
@@ -363,8 +382,11 @@ class Export:
         self.lbl_heading_history.grid(row=0)
 
         # Instruction Label (Row 1)
-        self.lbl_instructions = Label(self.frame_history,
-                                      text="Instructions here",
+        self.lbl_instructions = Label(self.frame_export,
+                                      text="Enter the name of the .txt file then press"
+                                           "Save to export it. If the file name is the"
+                                           "same as a file already in this location, that"
+                                           "file will be replaced.",
                                       font=("Arial", "10", "italic"),
                                       wrap=250,
                                       justify=CENTER,
@@ -372,22 +394,49 @@ class Export:
                                       padx=10, pady=10)
         self.lbl_instructions.grid(row=1)
 
+        # Name Entry
+        self.entry_name = Entry(self.frame_export,
+                                      width=30,
+                                      font=("Arial", "14", "bold"),
+                                      justify=CENTER)
+        self.entry_name.grid(row=2)
+
+        # Button Frame
+        self.frame_btns = Frame(self.window_export, width=300, height=200, padx=60,
+                                   bg=bg_colour)
+        self.frame_btns.grid()
+
+        # Save Button (Row 3)
+        self.btn_save = Button(self.frame_btns,
+                                  text="Dismiss",
+                                  font=("Arial", "14"),
+                                  padx=10, pady=10,
+                                  width=10,
+                                  command=partial(self.save_history,
+                                                  calculation_history))
+        self.btn_save.grid(row=3, column=0, pady=10)
+
         # Dismiss Button (Row 3)
-        self.btn_dismiss = Button(self.frame_history,
+        self.btn_dismiss = Button(self.frame_btns,
                                   text="Dismiss",
                                   font=("Arial", "14"),
                                   padx=10, pady=10,
                                   width=10,
                                   command=partial(self.dismiss_export,
                                                   partner))
-        self.btn_dismiss.grid(row=3, pady=10)
+        self.btn_dismiss.grid(row=3, column=1, pady=10)
 
-    # Dismiss History Function
+    # Save History Function
+    def save_history(self, calculation_history):
+        # Export File
+
+
+    # Dismiss Export Function
     def dismiss_export(self, partner):
         # Re-enable Help Button
-        partner.btn_history.configure(state=NORMAL)
+        partner.btn_export.configure(state=NORMAL)
         # Close Window
-        self.window_history.destroy()
+        self.window_export.destroy()
 
 
 # Main Routine
